@@ -5,6 +5,8 @@ import java.util.Scanner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.Capgemini.com.moodAnalyser.MoodAnalysisException.TypeOfException;
+
 public class MoodAnalyser {
 
 	String message;
@@ -18,15 +20,17 @@ public class MoodAnalyser {
 
 	private static Logger LOG = LogManager.getLogger(MoodAnalyser.class);
 
-	public String analyseMood() {
+	public String analyseMood() throws MoodAnalysisException {
 		try {
 			if (message.contains("Sad") || message.contains("sad")) {
 				return "SAD";
+			} else if(message.length() == 0) {
+				throw new MoodAnalysisException(TypeOfException.ENTERED_EMPTY, "Enter Proper Value");
 			} else {
 				return "HAPPY";
 			}
 		} catch (NullPointerException e) {
-			return "HAPPY";
+			throw new MoodAnalysisException(TypeOfException.ENTERED_NULL, "Enter Proper Value");
 		}
 	}
 
@@ -35,6 +39,10 @@ public class MoodAnalyser {
 		LOG.info("Enter your Mood: ");
 		String message = sc.nextLine();
 		MoodAnalyser moodAnalyser = new MoodAnalyser(message);
-		LOG.info(moodAnalyser.analyseMood());
+		try {
+			LOG.info(moodAnalyser.analyseMood());
+		} catch (MoodAnalysisException e) {
+			e.printStackTrace();
+		}
 	}
 }

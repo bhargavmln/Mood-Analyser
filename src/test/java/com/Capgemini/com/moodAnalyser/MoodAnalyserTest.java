@@ -5,26 +5,52 @@ import org.junit.Test;
 
 public class MoodAnalyserTest {
 
-	private String Null;
-
 	@Test
 	public void givenMessage_whenSad_returnSad() {
 		MoodAnalyser myMood = new MoodAnalyser("I am in Sad Mood");
-		String mood = myMood.analyseMood();
+		String mood = null;
+		try {
+			mood = myMood.analyseMood();
+		} catch (MoodAnalysisException e) {
+			e.printStackTrace();
+		}
 		Assert.assertEquals("SAD", mood);
 	}
 
 	@Test
 	public void givenMessage_whenNotSad_returnSad() {
-		MoodAnalyser myMood = new MoodAnalyser("I am in Happy Mood");
-		String mood = myMood.analyseMood();
+		MoodAnalyser myMood = new MoodAnalyser("I am in Any Mood");
+		String mood = null;
+		try {
+			mood = myMood.analyseMood();
+		} catch (MoodAnalysisException e) {
+			e.printStackTrace();
+		}
 		Assert.assertEquals("HAPPY", mood);
 	}
-	
+
 	@Test
-	public void givenMessage_whenNull_returnHappy() {
-		MoodAnalyser myMood = new MoodAnalyser(null);
-		String mood = myMood.analyseMood();
-		Assert.assertEquals("HAPPY", mood);
+	public void givenMessage_whenNull_shouldThrowException() {
+		try {
+			MoodAnalyser myMood = new MoodAnalyser(null);
+			myMood.analyseMood();
+		}
+		catch(MoodAnalysisException e) {
+			System.out.println(e.getMessage());
+			Assert.assertEquals("Enter Proper Value", e.getMessage());
+		}
+	}
+
+
+	@Test
+	public void givenMessage_whenEmpty_shouldThrowException() {
+		try {
+			MoodAnalyser myMood = new MoodAnalyser("");
+			myMood.analyseMood();
+		}
+		catch(MoodAnalysisException e) {
+			System.out.println(e.getMessage());
+			Assert.assertEquals("Enter Proper Value", e.getMessage());
+		}
 	}
 }
